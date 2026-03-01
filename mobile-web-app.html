@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Delivery Challan Printer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding-bottom: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #555;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .calculated {
+            background: #e8f5e9;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #4caf50;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #856404;
+            line-height: 1.5;
+        }
+        
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .header, .card, .btn, .info-box {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Delivery Challan Printer</h1>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <div class="section-title">Challan Details</div>
+            
+            <div class="form-group">
+                <label>DC/Ref #</label>
+                <input type="text" id="dcRef" value="24807">
+            </div>
+            
+            <div class="form-group">
+                <label>Party</label>
+                <input type="text" id="party" value="SEENU">
+            </div>
+            
+            <div class="form-group">
+                <label>Loading</label>
+                <input type="text" id="loading" value="DHARMA DEV">
+            </div>
+            
+            <div class="form-group">
+                <label>Unloading</label>
+                <input type="text" id="unloading" value="PARTY SITE">
+            </div>
+            
+            <div class="form-group">
+                <label>Transport</label>
+                <input type="text" id="transport" value="SEENU">
+            </div>
+            
+            <div class="form-group">
+                <label>Truck #</label>
+                <input type="text" id="truck" value="TN 87 6073">
+            </div>
+            
+            <div class="form-group">
+                <label>Item</label>
+                <input type="text" id="item" value="20 MM">
+            </div>
+            
+            <div class="form-group">
+                <label>HSN/SAC</label>
+                <input type="text" id="hsn" value="25171010">
+            </div>
+            
+            <div class="form-group">
+                <label>Empty Qty (MT)</label>
+                <input type="number" step="0.01" id="emptyQty" value="3.52">
+            </div>
+            
+            <div class="form-group">
+                <label>Full Qty (MT)</label>
+                <input type="number" step="0.01" id="fullQty" value="7.65">
+            </div>
+            
+            <div class="form-group">
+                <label>Net Qty (MT)</label>
+                <div class="calculated" id="netQty">4.13 MT</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Payment Mode</label>
+                <input type="text" id="paymentMode" value="Cash">
+            </div>
+        </div>
+        
+        <button class="btn btn-success" onclick="printChallan()">
+            🖨️ Print Challan
+        </button>
+        
+        <button class="btn btn-info" onclick="shareChallan()">
+            📤 Share / Save PDF
+        </button>
+        
+        <button class="btn btn-primary" onclick="copyText()">
+            📋 Copy Text Format
+        </button>
+        
+        <div id="status" class="status"></div>
+        
+        <div class="info-box">
+            💡 <strong>Tip:</strong> Use "Print" to send directly to your Bluetooth printer, or "Share" to save as PDF and print later from your printer app.
+        </div>
+    </div>
+    
+    <script>
+        function updateNetQty() {
+            const full = parseFloat(document.getElementById('fullQty').value) || 0;
+            const empty = parseFloat(document.getElementById('emptyQty').value) || 0;
+            const net = (full - empty).toFixed(2);
+            document.getElementById('netQty').textContent = net + ' MT';
+        }
+        
+        document.getElementById('fullQty').addEventListener('input', updateNetQty);
+        document.getElementById('emptyQty').addEventListener('input', updateNetQty);
+        
+        function getCurrentDateTime() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12 || 12;
+            return `${day}-${month}-${year} ${hours}:${minutes} ${ampm}`;
+        }
+        
+        function printChallan() {
+            window.print();
+        }
+        
+        async function shareChallan() {
+            const data = getFormData();
+            const text = generateTextFormat(data);
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Delivery Challan',
+                        text: text
+                    });
+                    showStatus('Shared successfully!', 'success');
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        copyText();
+                    }
+                }
+            } else {
+                copyText();
+            }
+        }
+        
+        function copyText() {
+            const data = getFormData();
+            const text = generateTextFormat(data);
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showStatus('✅ Copied to clipboard! Paste in your printer app.', 'success');
+            }).catch(() => {
+                showStatus('❌ Failed to copy. Please try again.', 'error');
+            });
+        }
+        
+        function getFormData() {
+            return {
+                date: getCurrentDateTime(),
+                dcRef: document.getElementById('dcRef').value,
+                party: document.getElementById('party').value,
+                loading: document.getElementById('loading').value,
+                unloading: document.getElementById('unloading').value,
+                transport: document.getElementById('transport').value,
+                truck: document.getElementById('truck').value,
+                item: document.getElementById('item').value,
+                hsn: document.getElementById('hsn').value,
+                emptyQty: document.getElementById('emptyQty').value,
+                fullQty: document.getElementById('fullQty').value,
+                netQty: document.getElementById('netQty').textContent,
+                paymentMode: document.getElementById('paymentMode').value
+            };
+        }
+        
+        function generateTextFormat(data) {
+            const pad = (label, value, width = 32) => {
+                const spaces = width - label.length - value.length;
+                return label + ' '.repeat(Math.max(1, spaces)) + value;
+            };
+            
+            return `________________________________
+
+           Delivery Challan
+
+Date: ${data.date}
+DC/Ref #: ${data.dcRef}
+________________________________
+
+      OUTGOING TRIP
+
+${pad('Party:', data.party)}
+${pad('Loading:', data.loading)}
+${pad('UnLoading:', data.unloading)}
+${pad('Transport:', data.transport)}
+${pad('Truck #:', data.truck)}
+${pad('Item:', data.item)}
+${pad('HSN/SAC:', data.hsn)}
+${pad('Empty Qty:', data.emptyQty + ' MT')}
+${pad('Full Qty:', data.fullQty + ' MT')}
+${pad('Net Qty:', data.netQty)}
+
+${pad('Payment Mode', data.paymentMode)}
+________________________________
+
+
+`;
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
